@@ -6,15 +6,19 @@ public class Employee {
     private String fname;
     private String lname;
     private String email;
+    private String username;
+    private String password;
 
     public Employee(){
 
     }
 
-    public Employee(int id, String fname, String lname, String email) {
+    public Employee(int id, String fname, String lname, String username, String password, String email) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
+        this.username = username;
+        this.password = password;
         this.email = email;
     }
 
@@ -40,6 +44,22 @@ public class Employee {
 
     public void setLname(String lname) {
         this.lname = lname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

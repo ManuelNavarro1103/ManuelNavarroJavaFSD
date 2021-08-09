@@ -21,11 +21,14 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 
     @Override
     public void addEmployee(Employee employee) throws SQLException {
-        String sql = "Insert into employees (EmployeeFName, EmployeeLName, EmployeeEmail) values (?,?,?)";
+        String sql = "Insert into employees (EmployeeFName, EmployeeLName, EmpUsername, EmpPassword, EmployeeEmail) " +
+                "values (?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, employee.getFname());
         preparedStatement.setString(2, employee.getLname());
-        preparedStatement.setString(3, employee.getEmail());
+        preparedStatement.setString(3, employee.getUsername());
+        preparedStatement.setString(4, employee.getPassword());
+        preparedStatement.setString(5, employee.getEmail());
         int count = preparedStatement.executeUpdate();
         if (count > 0)
             System.out.println("\nEmployee saved.");
@@ -35,13 +38,18 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 
     @Override
     public void updateEmployee(Employee employee) throws SQLException {
-        String sql = "Update employees set EmployeeFName = ?, EmployeeLName = ?, EmployeeEmail = ? where EmployeeId =" +
+        String sql = "Update employees set EmployeeFName = ?, EmployeeLName = ?, EmpUsername = ?, EmpPassword = " +
+                "?, EmployeeEmail = " +
+                "? where EmployeeId " +
+                "=" +
                 " ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, employee.getFname());
         preparedStatement.setString(2, employee.getLname());
-        preparedStatement.setString(3, employee.getEmail());
-        preparedStatement.setInt(4, employee.getId());
+        preparedStatement.setString(3, employee.getUsername());
+        preparedStatement.setString(4, employee.getPassword());
+        preparedStatement.setString(5, employee.getEmail());
+        preparedStatement.setInt(6, employee.getId());
         int count = preparedStatement.executeUpdate();
         if (count > 0)
             System.out.println("\nEmployee updated.");
@@ -68,8 +76,8 @@ public class EmployeeDAOImpl implements EmployeeDAO{
         ResultSet resultSet = statement.executeQuery("Select * from employees");
         while (resultSet.next()) {
             Employee employee = new Employee(resultSet.getInt(1), resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4));
+                    resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+                    resultSet.getString(6));
             employees.add(employee);
         }
         for (Employee emp : employees) {
@@ -90,5 +98,18 @@ public class EmployeeDAOImpl implements EmployeeDAO{
         }
 
         return null;
+    }
+
+    @Override
+    public boolean verifyLogin(String username, String password) throws SQLException {
+        String sql = "Select * from employees where EmpUsername = ? AND EmpPassword = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, password);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next())
+            return true;
+        else
+            return false;
     }
 }

@@ -9,4 +9,5 @@ public interface EmployeeDAO {
     void deleteEmployee(int id) throws SQLException;
     List<Employee> getEmployees() throws SQLException;
     Employee employeeById(int id) throws SQLException;
+    boolean verifyLogin(String username, String password) throws SQLException;
 }
