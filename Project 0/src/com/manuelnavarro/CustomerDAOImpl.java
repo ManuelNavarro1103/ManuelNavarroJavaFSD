@@ -55,7 +55,7 @@ public class CustomerDAOImpl implements CustomerDAO{
     public List<Customer> getCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("Select * from customers");
+        ResultSet resultSet = statement.executeQuery("call getcustomers()");
         while (resultSet.next()) {
             Customer customer = new Customer(resultSet.getInt(1), resultSet.getString(2),
                     resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6),
